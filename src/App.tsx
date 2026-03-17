@@ -5,8 +5,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { PortfolioProvider } from "@/context/PortfolioContext";
 import Navbar from "@/components/Navbar";
 import LandingPage from "@/pages/LandingPage";
-import RiskAssessmentPage from "@/pages/RiskAssessmentPage";
+import AdvisorPage from "@/pages/AdvisorPage";
 import RecommendationPage from "@/pages/RecommendationPage";
+import MarketInsightsPage from "@/pages/MarketInsightsPage";
 import PortfolioPage from "@/pages/PortfolioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import NotFound from "@/pages/NotFound";
@@ -22,10 +23,12 @@ const App = () => (
           <Navbar />
           <Routes>
             <Route path="/" element={<LandingPage />} />
-            <Route path="/risk-assessment" element={<RiskAssessmentPage />} />
+            <Route path="/advisor" element={<AdvisorPage />} />
             <Route path="/recommendations" element={<RecommendationPage />} />
+            <Route path="/market-insights" element={<MarketInsightsPage />} />
             <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/analytics" element={<AnalyticsPage />} />
+            <Route path="/risk-assessment" element={<AdvisorPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </PortfolioProvider>

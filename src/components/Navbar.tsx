@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
-import { TrendingUp } from "lucide-react";
+import { Brain } from "lucide-react";
 
 const navItems = [
   { path: "/", label: "Home" },
-  { path: "/risk-assessment", label: "Risk Assessment" },
-  { path: "/recommendations", label: "Recommendations" },
+  { path: "/advisor", label: "Get Advice" },
+  { path: "/market-insights", label: "Market Insights" },
   { path: "/portfolio", label: "Portfolio" },
   { path: "/analytics", label: "Analytics" },
 ];
@@ -17,7 +17,7 @@ export default function Navbar() {
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center glow-primary">
-            <TrendingUp className="w-5 h-5 text-primary" />
+            <Brain className="w-5 h-5 text-primary" />
           </div>
           <span className="font-display font-bold text-lg text-foreground">IntelliFund</span>
         </Link>
