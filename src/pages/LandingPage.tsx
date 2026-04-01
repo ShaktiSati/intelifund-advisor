@@ -1,10 +1,7 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Activity, Brain, ShieldCheck, BarChart3 } from "lucide-react";
 import HeroOrb from "@/components/HeroOrb";
-import { useAuth } from "@/hooks/useAuth";
-import AuthModal from "@/components/AuthModal";
 import InsightCard from "@/components/InsightCard";
 import { marketMood } from "@/data/mockData";
 
@@ -42,18 +39,6 @@ const features = [
 ];
 
 export default function LandingPage() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const [authOpen, setAuthOpen] = useState(false);
-
-  const handleGetStarted = () => {
-    if (user) {
-      navigate("/get-advice");
-    } else {
-      setAuthOpen(true);
-    }
-  };
-
   return (
     <div className="pt-20 pb-16">
       {/* Hero */}
@@ -82,9 +67,9 @@ export default function LandingPage() {
             Get data-driven fund recommendations and optimized investment strategies tailored to your goals. Let our AI guide your wealth creation journey.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <button onClick={handleGetStarted} className="btn-glow px-8 py-3 text-base flex items-center gap-2">
+            <Link to="/advisor" className="btn-glow px-8 py-3 text-base flex items-center gap-2">
               Get Started <ArrowRight className="w-4 h-4" />
-            </button>
+            </Link>
             <Link to="/market-insights" className="btn-outline-glow px-8 py-3 text-base">
               View Market Insights
             </Link>
@@ -161,13 +146,12 @@ export default function LandingPage() {
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Let our AI analyze your profile and recommend the perfect mutual fund strategy.
             </p>
-            <button onClick={handleGetStarted} className="btn-glow px-10 py-4 text-base inline-flex items-center gap-2">
+            <Link to="/advisor" className="btn-glow px-10 py-4 text-base inline-flex items-center gap-2">
               Start Your Free Analysis <ArrowRight className="w-5 h-5" />
-            </button>
+            </Link>
           </div>
         </motion.div>
       </section>
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} redirectTo="/get-advice" />
     </div>
   );
 }
