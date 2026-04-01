@@ -48,7 +48,7 @@ export default function LandingPage() {
 
   const handleGetStarted = () => {
     if (user) {
-      navigate("/ai-advisor");
+      navigate("/get-advice");
     } else {
       setAuthOpen(true);
     }
@@ -167,7 +167,7 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </section>
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} redirectTo="/ai-advisor" />
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} redirectTo="/get-advice" />
     </div>
   );
 }

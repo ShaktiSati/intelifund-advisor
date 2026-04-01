@@ -7,11 +7,12 @@ import { AuthProvider } from "@/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import LandingPage from "@/pages/LandingPage";
-import AIAdvisorPage from "@/pages/AIAdvisorPage";
+import AdvisorPage from "@/pages/AdvisorPage";
 import RecommendationPage from "@/pages/RecommendationPage";
 import MarketInsightsPage from "@/pages/MarketInsightsPage";
 import PortfolioPage from "@/pages/PortfolioPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
+import GetAdvicePage from "@/pages/GetAdvicePage";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,11 +27,13 @@ const App = () => (
             <Navbar />
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/ai-advisor" element={<ProtectedRoute><AIAdvisorPage /></ProtectedRoute>} />
+              <Route path="/get-advice" element={<ProtectedRoute><GetAdvicePage /></ProtectedRoute>} />
+              <Route path="/advisor" element={<AdvisorPage />} />
               <Route path="/recommendations" element={<RecommendationPage />} />
               <Route path="/market-insights" element={<MarketInsightsPage />} />
-              <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
-              <Route path="/analytics" element={<ProtectedRoute><AnalyticsPage /></ProtectedRoute>} />
+              <Route path="/portfolio" element={<PortfolioPage />} />
+              <Route path="/analytics" element={<AnalyticsPage />} />
+              <Route path="/risk-assessment" element={<AdvisorPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </PortfolioProvider>

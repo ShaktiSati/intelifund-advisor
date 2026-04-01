@@ -10,7 +10,7 @@ interface AuthModalProps {
   redirectTo?: string;
 }
 
-export default function AuthModal({ open, onClose, redirectTo = "/ai-advisor" }: AuthModalProps) {
+export default function AuthModal({ open, onClose, redirectTo = "/get-advice" }: AuthModalProps) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
