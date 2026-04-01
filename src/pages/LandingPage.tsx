@@ -167,7 +167,7 @@ export default function LandingPage() {
           </div>
         </motion.div>
       </section>
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} redirectTo="/get-advice" />
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} redirectTo="/ai-advisor" />
     </div>
   );
 }

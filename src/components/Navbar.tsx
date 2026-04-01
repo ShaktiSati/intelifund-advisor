@@ -1,22 +1,29 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Brain, LogOut } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "@/components/AuthModal";
 
 const navItems = [
   { path: "/", label: "Home" },
-  { path: "/get-advice", label: "Get Advice", protected: true },
-  { path: "/advisor", label: "AI Advisor" },
+  { path: "/ai-advisor", label: "AI Advisor", protected: true },
   { path: "/market-insights", label: "Market Insights" },
-  { path: "/portfolio", label: "Portfolio" },
-  { path: "/analytics", label: "Analytics" },
+  { path: "/portfolio", label: "Portfolio", protected: true },
+  { path: "/analytics", label: "Analytics", protected: true },
 ];
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const { user, signOut } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
+
+  const handleNavClick = (item: typeof navItems[0], e: React.MouseEvent) => {
+    if (item.protected && !user) {
+      e.preventDefault();
+      setAuthOpen(true);
+    }
+  };
 
   return (
     <>
@@ -33,6 +40,7 @@ export default function Navbar() {
               <Link
                 key={item.path}
                 to={item.path}
+                onClick={(e) => handleNavClick(item, e)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   pathname === item.path
                     ? "bg-primary/15 text-primary glow-primary"
