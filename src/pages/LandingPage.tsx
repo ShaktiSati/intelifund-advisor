@@ -42,6 +42,18 @@ const features = [
 ];
 
 export default function LandingPage() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [authOpen, setAuthOpen] = useState(false);
+
+  const handleGetStarted = () => {
+    if (user) {
+      navigate("/get-advice");
+    } else {
+      setAuthOpen(true);
+    }
+  };
+
   return (
     <div className="pt-20 pb-16">
       {/* Hero */}
