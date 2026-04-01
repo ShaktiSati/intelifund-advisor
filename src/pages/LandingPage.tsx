@@ -1,7 +1,10 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Activity, Brain, ShieldCheck, BarChart3 } from "lucide-react";
 import HeroOrb from "@/components/HeroOrb";
+import { useAuth } from "@/hooks/useAuth";
+import AuthModal from "@/components/AuthModal";
 import InsightCard from "@/components/InsightCard";
 import { marketMood } from "@/data/mockData";
 
