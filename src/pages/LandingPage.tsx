@@ -161,12 +161,13 @@ export default function LandingPage() {
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Let our AI analyze your profile and recommend the perfect mutual fund strategy.
             </p>
-            <Link to="/advisor" className="btn-glow px-10 py-4 text-base inline-flex items-center gap-2">
+            <button onClick={handleGetStarted} className="btn-glow px-10 py-4 text-base inline-flex items-center gap-2">
               Start Your Free Analysis <ArrowRight className="w-5 h-5" />
-            </Link>
+            </button>
           </div>
         </motion.div>
       </section>
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} redirectTo="/get-advice" />
     </div>
   );
 }
