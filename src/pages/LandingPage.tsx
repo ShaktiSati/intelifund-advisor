@@ -82,9 +82,9 @@ export default function LandingPage() {
             Get data-driven fund recommendations and optimized investment strategies tailored to your goals. Let our AI guide your wealth creation journey.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <Link to="/advisor" className="btn-glow px-8 py-3 text-base flex items-center gap-2">
+            <button onClick={handleGetStarted} className="btn-glow px-8 py-3 text-base flex items-center gap-2">
               Get Started <ArrowRight className="w-4 h-4" />
-            </Link>
+            </button>
             <Link to="/market-insights" className="btn-outline-glow px-8 py-3 text-base">
               View Market Insights
             </Link>
