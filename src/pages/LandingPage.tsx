@@ -48,7 +48,7 @@ export default function LandingPage() {
 
   const handleGetStarted = () => {
     if (user) {
-      navigate("/get-advice");
+      navigate("/ai-advisor");
     } else {
       setAuthOpen(true);
     }
