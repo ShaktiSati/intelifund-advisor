@@ -1,16 +1,23 @@
 import { Link, useLocation } from "react-router-dom";
-import { Brain } from "lucide-react";
+import { Brain, LogOut, LogIn, UserPlus } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
-const navItems = [
+const publicNavItems = [
   { path: "/", label: "Home" },
-  { path: "/advisor", label: "Get Advice" },
   { path: "/market-insights", label: "Market Insights" },
+];
+
+const protectedNavItems = [
+  { path: "/advisor", label: "Get Advice" },
   { path: "/portfolio", label: "Portfolio" },
   { path: "/analytics", label: "Analytics" },
 ];
 
 export default function Navbar() {
   const { pathname } = useLocation();
+  const { user, signOut } = useAuth();
+
+  const navItems = user ? [...publicNavItems, ...protectedNavItems] : publicNavItems;
 
   return (
     <nav className="nav-glass">
@@ -35,6 +42,30 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
+
+          {user ? (
+            <button
+              onClick={signOut}
+              className="ml-2 px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300 flex items-center gap-2"
+            >
+              <LogOut className="w-4 h-4" /> Logout
+            </button>
+          ) : (
+            <div className="flex items-center gap-1 ml-2">
+              <Link
+                to="/auth"
+                className="px-4 py-2 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all duration-300 flex items-center gap-2"
+              >
+                <LogIn className="w-4 h-4" /> Login
+              </Link>
+              <Link
+                to="/auth"
+                className="btn-glow px-4 py-2 text-sm flex items-center gap-2"
+              >
+                <UserPlus className="w-4 h-4" /> Sign Up
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </nav>

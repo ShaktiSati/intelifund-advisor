@@ -67,7 +67,7 @@ export default function LandingPage() {
             Get data-driven fund recommendations and optimized investment strategies tailored to your goals. Let our AI guide your wealth creation journey.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <Link to="/advisor" className="btn-glow px-8 py-3 text-base flex items-center gap-2">
+            <Link to="/auth" className="btn-glow px-8 py-3 text-base flex items-center gap-2">
               Get Started <ArrowRight className="w-4 h-4" />
             </Link>
             <Link to="/market-insights" className="btn-outline-glow px-8 py-3 text-base">
@@ -146,8 +146,8 @@ export default function LandingPage() {
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Let our AI analyze your profile and recommend the perfect mutual fund strategy.
             </p>
-            <Link to="/advisor" className="btn-glow px-10 py-4 text-base inline-flex items-center gap-2">
-              Start Your Free Analysis <ArrowRight className="w-5 h-5" />
+            <Link to="/auth" className="btn-glow px-10 py-4 text-base inline-flex items-center gap-2">
+              Get Started Now <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </motion.div>
