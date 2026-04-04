@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Brain, Mail, Lock, User, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +15,13 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { user, loading: authLoading } = useAuth();
+
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate("/advisor", { replace: true });
+    }
+  }, [authLoading, user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,8 +31,7 @@ export default function AuthPage() {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        toast({ title: "Successfully logged in!", description: "Welcome back to IntelliFund." });
-        navigate("/advisor");
+        toast({ title: "Successfully logged in!", description: "Redirecting you to Get Advice." });
       } else {
         const { error } = await supabase.auth.signUp({
           email,
@@ -37,9 +44,8 @@ export default function AuthPage() {
         if (error) throw error;
         toast({
           title: "Successfully signed up!",
-          description: "Your account has been created. Welcome to IntelliFund!",
+          description: "Your account is ready. Redirecting you to Get Advice.",
         });
-        navigate("/advisor");
       }
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
@@ -67,7 +73,6 @@ export default function AuthPage() {
           </p>
         </div>
 
-        {/* Tabs */}
         <div className="flex gap-1 p-1 glass-card rounded-full mb-8">
           <button
             onClick={() => setIsLogin(true)}
@@ -95,7 +100,7 @@ export default function AuthPage() {
                 type="text"
                 placeholder="Full Name"
                 value={fullName}
-                onChange={e => setFullName(e.target.value)}
+                onChange={(e) => setFullName(e.target.value)}
                 required={!isLogin}
                 className="flex-1 bg-transparent py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
               />
@@ -108,7 +113,7 @@ export default function AuthPage() {
               type="email"
               placeholder="Email address"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className="flex-1 bg-transparent py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
             />
@@ -120,7 +125,7 @@ export default function AuthPage() {
               type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={(e) => setPassword(e.target.value)}
               required
               minLength={6}
               className="flex-1 bg-transparent py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
