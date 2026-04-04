@@ -23,7 +23,7 @@ export default function AuthPage() {
       if (isLogin) {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        toast({ title: "Welcome back!", description: "You've been logged in successfully." });
+        toast({ title: "Successfully logged in!", description: "Welcome back to IntelliFund." });
         navigate("/advisor");
       } else {
         const { error } = await supabase.auth.signUp({
@@ -36,9 +36,10 @@ export default function AuthPage() {
         });
         if (error) throw error;
         toast({
-          title: "Account created!",
-          description: "Please check your email to verify your account before signing in.",
+          title: "Successfully signed up!",
+          description: "Your account has been created. Welcome to IntelliFund!",
         });
+        navigate("/advisor");
       }
     } catch (error: any) {
       toast({ title: "Error", description: error.message, variant: "destructive" });
