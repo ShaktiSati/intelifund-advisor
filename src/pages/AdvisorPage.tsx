@@ -1,167 +1,125 @@
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Target, Clock, Wallet, TrendingUp, ArrowRight, ArrowLeft, Sparkles, User } from "lucide-react";
+import { ArrowRight, ArrowLeft, Sparkles, Wallet, ShieldCheck, PiggyBank, GraduationCap, TrendingDown, Target, Clock, BarChart3 } from "lucide-react";
 
-const goals = ["Wealth Creation", "Retirement", "Education", "Emergency Fund"] as const;
-const riskLevels = ["Conservative", "Moderate", "Aggressive"] as const;
+const questions = [
+  {
+    icon: Wallet,
+    title: "What is your monthly income?",
+    subtitle: "This helps us understand your financial capacity",
+    options: ["Less than ₹25,000", "₹25,000 – ₹50,000", "₹50,000 – ₹1,00,000", "More than ₹1,00,000"],
+  },
+  {
+    icon: ShieldCheck,
+    title: "How stable is your income?",
+    subtitle: "Income stability affects your risk-taking ability",
+    options: ["Very stable (fixed salary)", "Mostly stable", "Somewhat unpredictable", "Highly uncertain"],
+  },
+  {
+    icon: PiggyBank,
+    title: "How much do you invest monthly (SIP)?",
+    subtitle: "Even small amounts compound significantly over time",
+    options: ["Less than ₹2,000", "₹2,000 – ₹5,000", "₹5,000 – ₹15,000", "More than ₹15,000"],
+  },
+  {
+    icon: GraduationCap,
+    title: "What is your investment experience?",
+    subtitle: "Experience helps us calibrate recommendations",
+    options: ["No experience (beginner)", "Limited experience", "Moderate experience", "Advanced investor"],
+  },
+  {
+    icon: TrendingDown,
+    title: "If your investment drops by 20%, what will you do?",
+    subtitle: "This reveals your true risk tolerance",
+    options: ["Sell immediately", "Wait for recovery", "Stay invested calmly", "Invest more"],
+  },
+  {
+    icon: Target,
+    title: "What is your primary investment goal?",
+    subtitle: "Your goal shapes the right strategy for you",
+    options: ["Short-term needs (travel, gadgets, etc.)", "Saving for a specific goal (car, house)", "Wealth creation", "Retirement planning"],
+  },
+  {
+    icon: Clock,
+    title: "What is your investment time horizon?",
+    subtitle: "Longer horizons allow for more aggressive strategies",
+    options: ["Less than 3 years", "3 to 5 years", "5 to 10 years", "More than 10 years"],
+  },
+  {
+    icon: BarChart3,
+    title: "What is your current investment preference?",
+    subtitle: "This tells us about your existing comfort level",
+    options: ["Mostly fixed deposits / safe options", "More in debt funds", "Balanced (equity + debt)", "Mostly equity investments"],
+  },
+] as const;
 
-function getRiskLabel(riskValue: number) {
-  if (riskValue >= 70) return { label: "Aggressive Investor", color: "text-destructive", strategy: "High-Growth Equity Strategy" };
-  if (riskValue >= 40) return { label: "Moderate Investor", color: "text-warning", strategy: "Balanced Growth Strategy" };
-  return { label: "Conservative Investor", color: "text-success", strategy: "Capital Preservation Strategy" };
+// Each answer index (0-3) maps to a score contribution. Higher = more aggressive.
+const scoreWeights = [
+  [0, 1, 2, 3],   // income
+  [3, 2, 1, 0],   // stability (stable = can take more risk)
+  [0, 1, 2, 3],   // SIP amount
+  [0, 1, 2, 3],   // experience
+  [0, 1, 2, 3],   // reaction to drop
+  [0, 1, 2, 3],   // goal
+  [0, 1, 2, 3],   // horizon
+  [0, 1, 2, 3],   // preference
+];
+
+function computeRiskScore(answers: number[]): number {
+  let total = 0;
+  let max = 0;
+  answers.forEach((a, i) => {
+    total += scoreWeights[i][a];
+    max += 3;
+  });
+  return Math.round((total / max) * 100);
+}
+
+function mapAnswersToParams(answers: number[]) {
+  const sipMap = [1500, 3500, 10000, 20000];
+  const durationMap = [2, 4, 7, 12];
+  const goalMap = ["Short-term", "Specific Goal", "Wealth Creation", "Retirement"];
+  return {
+    sip: sipMap[answers[2]],
+    duration: durationMap[answers[6]],
+    goal: goalMap[answers[5]],
+  };
 }
 
 export default function AdvisorPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
-  const [duration, setDuration] = useState(5);
-  const [sip, setSip] = useState(10000);
-  const [riskValue, setRiskValue] = useState(50);
-  const [goal, setGoal] = useState<string>("Wealth Creation");
+  const [answers, setAnswers] = useState<number[]>(Array(questions.length).fill(-1));
 
-  const profile = useMemo(() => getRiskLabel(riskValue), [riskValue]);
+  const handleSelect = (optionIndex: number) => {
+    const updated = [...answers];
+    updated[step] = optionIndex;
+    setAnswers(updated);
+  };
+
+  const canProceed = answers[step] !== -1;
+
+  const handleNext = () => {
+    if (step < questions.length - 1) {
+      setStep(s => s + 1);
+    }
+  };
 
   const handleSubmit = () => {
-    let score = riskValue;
-    if (duration >= 7) score = Math.min(100, score + 10);
-    if (duration <= 3) score = Math.max(0, score - 10);
+    const score = computeRiskScore(answers);
+    const { sip, duration, goal } = mapAnswersToParams(answers);
     navigate(`/recommendations?risk=${score}&sip=${sip}&duration=${duration}&goal=${goal}`);
   };
 
-  const steps = [
-    {
-      icon: Target,
-      title: "What's your investment goal?",
-      subtitle: "This helps us tailor the right strategy for you",
-      content: (
-        <div className="grid grid-cols-2 gap-3">
-          {goals.map(g => (
-            <button
-              key={g}
-              onClick={() => { setGoal(g); setStep(1); }}
-              className={`py-4 px-4 rounded-xl text-sm font-semibold transition-all duration-300 ${
-                goal === g
-                  ? "bg-primary/20 text-primary border border-primary/40 glow-primary"
-                  : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/20"
-              }`}
-            >
-              {g}
-            </button>
-          ))}
-        </div>
-      ),
-    },
-    {
-      icon: Clock,
-      title: "How long do you plan to invest?",
-      subtitle: "Longer horizons allow for more aggressive strategies",
-      content: (
-        <div>
-          <input
-            type="range"
-            min={1}
-            max={20}
-            value={duration}
-            onChange={e => setDuration(Number(e.target.value))}
-            className="w-full accent-primary h-2 rounded-full"
-          />
-          <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-            <span>1 year</span>
-            <span className="text-primary font-bold text-2xl font-display">{duration} years</span>
-            <span>20 years</span>
-          </div>
-          <div className="mt-4 glass-card p-3 rounded-lg">
-            <p className="text-xs text-muted-foreground">
-              {duration <= 3 ? "📌 Short-term: We'll focus on low-volatility, stable funds." :
-               duration <= 7 ? "📊 Medium-term: A balanced mix of growth and stability." :
-               "🚀 Long-term: You can afford higher risk for maximum growth."}
-            </p>
-          </div>
-        </div>
-      ),
-    },
-    {
-      icon: Wallet,
-      title: "How much can you invest monthly?",
-      subtitle: "Even small amounts compound significantly over time",
-      content: (
-        <div>
-          <div className="glass-card p-4 rounded-xl flex items-center gap-3">
-            <span className="text-2xl text-muted-foreground">₹</span>
-            <input
-              type="number"
-              value={sip}
-              onChange={e => setSip(Number(e.target.value))}
-              className="flex-1 bg-transparent text-3xl font-bold font-display text-foreground focus:outline-none"
-              min={500}
-              step={500}
-            />
-            <span className="text-sm text-muted-foreground">/month</span>
-          </div>
-          <div className="flex gap-2 mt-4 flex-wrap">
-            {[5000, 10000, 25000, 50000].map(amt => (
-              <button
-                key={amt}
-                onClick={() => setSip(amt)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
-                  sip === amt ? "bg-primary/20 text-primary border border-primary/40" : "glass-card text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                ₹{amt.toLocaleString()}
-              </button>
-            ))}
-          </div>
-        </div>
-      ),
-    },
-    {
-      icon: TrendingUp,
-      title: "What's your risk comfort level?",
-      subtitle: "We'll match funds to your risk tolerance",
-      content: (
-        <div>
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={riskValue}
-            onChange={e => setRiskValue(Number(e.target.value))}
-            className="w-full accent-primary h-2 rounded-full"
-          />
-          <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-            <span>Safe</span>
-            <span>Balanced</span>
-            <span>Aggressive</span>
-          </div>
-          
-          {/* Dynamic feedback */}
-          <motion.div
-            key={profile.label}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mt-6 glass-card p-4 rounded-xl border-l-4 border-primary/40"
-          >
-            <div className="flex items-center gap-2 mb-1">
-              <User className="w-4 h-4 text-primary" />
-              <span className={`font-display font-bold text-sm ${profile.color}`}>{profile.label}</span>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Recommended strategy: <span className="text-foreground font-semibold">{profile.strategy}</span>
-            </p>
-          </motion.div>
-        </div>
-      ),
-    },
-  ];
-
-  const currentStep = steps[step];
+  const currentQ = questions[step];
+  const Icon = currentQ.icon;
 
   return (
     <div className="pt-24 pb-16 container mx-auto px-4 max-w-xl">
       {/* Progress */}
-      <div className="flex gap-2 mb-8">
-        {steps.map((_, i) => (
+      <div className="flex gap-1.5 mb-8">
+        {questions.map((_, i) => (
           <div
             key={i}
             className={`h-1.5 flex-1 rounded-full transition-all duration-500 ${
@@ -181,15 +139,30 @@ export default function AdvisorPage() {
         >
           <div className="flex items-center gap-3 mb-2">
             <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center">
-              <currentStep.icon className="w-5 h-5 text-primary" />
+              <Icon className="w-5 h-5 text-primary" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-xl text-foreground">{currentStep.title}</h1>
-              <p className="text-sm text-muted-foreground">{currentStep.subtitle}</p>
+              <p className="text-xs text-muted-foreground font-medium">Question {step + 1} of {questions.length}</p>
+              <h1 className="font-display font-bold text-xl text-foreground">{currentQ.title}</h1>
             </div>
           </div>
+          <p className="text-sm text-muted-foreground ml-[52px] mb-6">{currentQ.subtitle}</p>
 
-          <div className="mt-8">{currentStep.content}</div>
+          <div className="grid gap-3">
+            {currentQ.options.map((option, i) => (
+              <button
+                key={i}
+                onClick={() => handleSelect(i)}
+                className={`w-full text-left py-4 px-5 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                  answers[step] === i
+                    ? "bg-primary/20 text-primary border border-primary/40 glow-primary"
+                    : "glass-card text-muted-foreground hover:text-foreground hover:border-primary/20"
+                }`}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
 
           {/* Navigation */}
           <div className="flex justify-between mt-10">
@@ -201,12 +174,20 @@ export default function AdvisorPage() {
               <ArrowLeft className="w-4 h-4" /> Back
             </button>
 
-            {step < steps.length - 1 ? (
-              <button onClick={() => setStep(s => s + 1)} className="btn-glow px-6 py-2.5 text-sm flex items-center gap-2">
+            {step < questions.length - 1 ? (
+              <button
+                onClick={handleNext}
+                disabled={!canProceed}
+                className="btn-glow px-6 py-2.5 text-sm flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
                 Continue <ArrowRight className="w-4 h-4" />
               </button>
             ) : (
-              <button onClick={handleSubmit} className="btn-glow px-6 py-2.5 text-sm flex items-center gap-2">
+              <button
+                onClick={handleSubmit}
+                disabled={!canProceed}
+                className="btn-glow px-6 py-2.5 text-sm flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
                 <Sparkles className="w-4 h-4" /> Get AI Recommendations
               </button>
             )}
