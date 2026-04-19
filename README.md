@@ -1,140 +1,289 @@
-# Welcome to your Lovable project
-IntelliFund Advisor
-Project Overview
-IntelliFund Advisor is a comprehensive mutual fund recommendation platform that combines modern web technologies with intelligent data processing to provide personalized investment advice. The platform offers market insights, risk assessment, portfolio management, and AI-powered fund recommendations based on user preferences and financial goals.
+# IntelliFund Advisor
 
-The application consists of three main components:
+An AI-powered mutual fund recommendation platform that delivers personalized investment advice through intelligent risk assessment, market insights, and data-driven fund recommendations.
 
-Frontend: A responsive React-based web application with authentication and interactive dashboards
-Backend API: A FastAPI-powered REST API serving fund data and recommendations
-Data Pipeline: A Python-based ETL pipeline for processing and analyzing mutual fund data
-Features
-Core Functionality
-Fund Recommendations: AI-powered fund suggestions based on risk tolerance, investment goals, and time horizon
-Market Insights: Real-time market analysis and trend visualization
-Portfolio Management: Track and manage investment portfolios
-Risk Assessment: Comprehensive risk evaluation tools
-Analytics Dashboard: Detailed performance metrics and analytics
-User Experience
-Authentication: Secure user authentication via Supabase
-Responsive Design: Mobile-first design using Tailwind CSS and ShadCN UI components
-Interactive Charts: Data visualization using Chart.js and related libraries
-Real-time Updates: Live market data integration
-Data Processing
-ETL Pipeline: Automated data extraction, transformation, and loading
-Fund Classification: Intelligent categorization of mutual funds
-Metrics Calculation: Risk metrics, returns analysis, and quality scoring
-Data Validation: Quality assurance and data integrity checks
-Technology Stack
-Frontend
-Framework: React 18 with TypeScript
-Build Tool: Vite
-Styling: Tailwind CSS with ShadCN UI components
-State Management: React Query for server state, Context API for global state
-Routing: React Router
-Authentication: Supabase Auth
-Charts: Chart.js ecosystem
-Testing: Vitest with Playwright for E2E testing
-Backend
-Framework: FastAPI (Python)
-Database: Supabase (PostgreSQL)
-Data Processing: Pandas, NumPy
-API Documentation: Automatic OpenAPI/Swagger docs
-CORS: Configured for cross-origin requests
-Data Pipeline
-Language: Python
-Data Libraries: Pandas, NumPy
-File Processing: CSV handling and data validation
-Metrics Engine: Custom algorithms for fund analysis
-Infrastructure
-Database: Supabase (managed PostgreSQL)
-Deployment: Configurable for various cloud platforms
-Version Control: Git
-Project Structure
-Installation
-Prerequisites
-Node.js 18+ and npm
-Python 3.8+
-Supabase account and project
-Frontend Setup
-Navigate to the project root:
+![IntelliFund](https://img.shields.io/badge/React-18.0-blue?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue?logo=typescript)
+![Tailwind](https://img.shields.io/badge/Tailwind_CSS-3.0-teal?logo=tailwind-css)
+![Vite](https://img.shields.io/badge/Vite-5.0-purple?logo=vite)
 
-Install dependencies:
+---
 
-Configure environment variables:
-Create a .env.local file with:
+## 🌟 Features
 
-Start the development server:
+### Core Functionality
+- **🤖 AI-Powered Fund Recommendations** — Get personalized mutual fund suggestions based on your risk tolerance, investment goals, and time horizon
+- **📊 Risk Assessment Questionnaire** — 8-question interactive wizard to determine your risk profile
+- **📈 Market Insights** — Real-time market analysis with AMFI NAV data integration
+- **💼 Portfolio Management** — Track and manage your investment portfolio
+- **🔍 Smart Fund Matching** — Explainable recommendations with "Why this fund?" breakdowns
 
-Backend Setup
-Navigate to the backend directory:
+### User Experience
+- **🔐 Secure Authentication** — JWT-based auth with protected routes
+- **📱 Responsive Design** — Mobile-first design using Tailwind CSS and ShadCN UI
+- **✨ Modern UI** — Glass morphism effects, smooth animations with Framer Motion
+- **📊 Data Visualization** — Interactive charts using Chart.js
 
-Create a virtual environment:
+### Data Pipeline
+- **🔗 AMFI API Integration** — Live NAV data from Association of Mutual Funds in India
+- **📁 Fallback System** — Gracefully degrades to mock data when APIs are unavailable
+- **🗄️ PostgreSQL Database** — Direct database integration for user data and responses
 
-Install dependencies:
+---
 
-Start the FastAPI server:
+## 🛠️ Technology Stack
 
-Data Pipeline Setup
-Navigate to the pipeline directory:
+### Frontend
+| Technology | Purpose |
+|------------|---------|
+| React 18 | UI Framework |
+| TypeScript | Type Safety |
+| Vite | Build Tool & Dev Server |
+| Tailwind CSS | Styling |
+| ShadCN UI | Component Library |
+| Framer Motion | Animations |
+| Chart.js | Data Visualization |
+| React Router | Client-side Routing |
 
-Install dependencies:
+### Backend
+| Technology | Purpose |
+|------------|---------|
+| Supabase Edge Functions | Serverless API endpoints |
+| PostgreSQL | Primary Database |
+| AMFI API | External NAV Data |
 
-Run the pipeline:
+### Testing
+| Tool | Purpose |
+|------|---------|
+| Vitest | Unit Testing |
+| Playwright | E2E Testing |
 
-Usage
-Running the Application
-Start the backend API server
-Start the frontend development server
-Access the application at http://localhost:5173
-API Endpoints
-Funds
-GET /api/funds - Retrieve all available funds
-GET /api/market-insights - Get market insights and trends
-POST /api/recommendations - Get personalized fund recommendations
-Health Check
-GET /health - API health status
-Data Pipeline
-The data pipeline processes mutual fund data through several stages:
+---
 
-Fetch: Download NAV data from external sources
-Clean: Process and clean historical data
-Risk Calculation: Compute risk metrics and returns
-Store: Save processed data to CSV files
-Quality Report: Generate fund quality assessments
-Development
-Testing
-Building for Production
-Code Quality
-API Documentation
-When the backend is running, visit http://localhost:8000/docs for interactive API documentation powered by Swagger UI.
+## 📁 Project Structure
 
-Database Schema
-The application uses Supabase for data storage with the following key tables:
+```
+├── src/
+│   ├── components/          # UI Components
+│   │   ├── ui/             # ShadCN UI components
+│   │   ├── AdvisorFundCard.tsx
+│   │   ├── FundCard.tsx
+│   │   ├── InsightCard.tsx
+│   │   ├── MetricCard.tsx
+│   │   ├── Navbar.tsx
+│   │   └── ProtectedRoute.tsx
+│   ├── pages/              # Route Pages
+│   │   ├── LandingPage.tsx
+│   │   ├── AuthPage.tsx
+│   │   ├── AdvisorPage.tsx        # Risk Questionnaire
+│   │   ├── RecommendationPage.tsx # Fund Results
+│   │   ├── MarketInsightsPage.tsx
+│   │   ├── PortfolioPage.tsx
+│   │   ├── AnalyticsPage.tsx
+│   │   └── NotFound.tsx
+│   ├── hooks/              # Custom React Hooks
+│   │   ├── useAuth.tsx
+│   │   └── use-toast.ts
+│   ├── context/            # React Context
+│   │   └── PortfolioContext.tsx
+│   ├── services/           # API Services
+│   │   └── apiService.ts
+│   ├── data/               # Mock Data & Constants
+│   │   ├── mockData.ts
+│   │   └── fundReasons.ts
+│   ├── lib/                # Utilities
+│   │   └── utils.ts
+│   ├── integrations/
+│   │   └── supabase/
+│   │       ├── client.ts
+│   │       └── types.ts
+│   └── App.tsx             # Main App Component
+├── supabase/
+│   └── functions/          # Edge Functions
+│       └── fetch-amfi-nav/ # AMFI API Integration
+├── public/                 # Static Assets
+├── index.html
+├── tailwind.config.ts
+└── README.md
+```
 
-User profiles and authentication
-Portfolio holdings
-Transaction history
-Fund metadata
-Contributing
-Fork the repository
-Create a feature branch: git checkout -b feature/your-feature
-Commit changes: git commit -am 'Add new feature'
-Push to branch: git push origin feature/your-feature
-Submit a pull request
-Code Standards
-Follow TypeScript and Python best practices
-Use ESLint and Prettier for code formatting
-Write tests for new features
-Update documentation for API changes
-License
-This project is licensed under the MIT License - see the LICENSE file for details.
+---
 
-Acknowledgments
-Mutual fund data sources
-Open source libraries and frameworks
-Supabase for backend services
-ShadCN for UI components
-Support
-For questions or issues, please open an issue on the GitHub repository or contact the development team
-TODO: Document your project here
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ and npm
+- A Supabase project (or local PostgreSQL)
+
+### Installation
+
+1. **Clone the repository:**
+```bash
+git clone <repository-url>
+cd intellifund-advisor
+```
+
+2. **Install dependencies:**
+```bash
+npm install
+```
+
+3. **Configure environment variables:**
+Create a `.env` file with:
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your-anon-key
+```
+
+4. **Start the development server:**
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+---
+
+## 🎯 Usage
+
+### Risk Assessment Flow
+1. **Sign up** or **Log in** to access protected features
+2. Navigate to **"Get Advice"** to start the questionnaire
+3. Answer 8 questions about:
+   - Monthly income & stability
+   - SIP investment amount
+   - Investment experience
+   - Risk tolerance
+   - Financial goals & time horizon
+4. Get **personalized fund recommendations** with AI-powered explanations
+
+### API Integration
+The app connects to **AMFI (Association of Mutual Funds in India)** for live NAV data:
+- Edge Function: `fetch-amfi-nav`
+- Endpoint: Daily NAV data from `amfiindia.com`
+- Fallback: Mock data when API is unavailable
+
+---
+
+## 📊 Database Schema
+
+### Key Tables
+
+**profiles**
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | Auth user reference |
+| full_name | TEXT | User's full name |
+| email | TEXT | User email |
+| created_at | TIMESTAMP | Creation time |
+
+**advisory_responses**
+| Column | Type | Description |
+|--------|------|-------------|
+| id | UUID | Primary key |
+| user_id | UUID | Auth user reference |
+| monthly_income | NUMBER | Monthly income bracket |
+| investment_amount | NUMBER | SIP amount |
+| risk_tolerance | ENUM | Low/Medium/High |
+| financial_goal | ENUM | Tax Saving/Education/Wealth/Retirement |
+| investment_duration | ENUM | Short/Mid/Long term |
+| recommendation | JSON | AI recommendation result |
+| created_at | TIMESTAMP | Response time |
+
+---
+
+## 🔌 API Endpoints
+
+### Internal APIs
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/recommendations` | GET | Fetch fund recommendations |
+| `/portfolio` | GET/POST | Portfolio management |
+| `/market-insights` | GET | Market data & trends |
+
+### External APIs
+| Source | Endpoint | Data |
+|--------|----------|------|
+| AMFI India | `amfiindia.com/spages/NAVAll.txt` | Daily NAV data |
+
+---
+
+## 🧪 Development
+
+### Running Tests
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+```
+
+### Code Quality
+- **ESLint** — Linting with TypeScript rules
+- **Prettier** — Code formatting
+- **TypeScript** — Strict type checking
+
+---
+
+## 📦 Building for Production
+
+```bash
+npm run build
+```
+
+Output is generated in the `dist/` directory, ready for deployment.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+### Code Standards
+- Follow TypeScript best practices
+- Use ESLint and Prettier for formatting
+- Write tests for new features
+- Update documentation for API changes
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **AMFI India** — For providing public NAV data
+- **ShadCN UI** — Beautiful, accessible components
+- **Supabase** — Backend services
+- **Open source libraries** — React, Tailwind, Framer Motion, Chart.js
+
+---
+
+## 💬 Support
+
+For questions or issues:
+- Open an issue on GitHub
+- Contact the development team
+
+---
+
+## 🔮 Future Roadmap
+
+- [ ] Historical NAV tracking & performance charts
+- [ ] Machine learning model integration for predictions
+- [ ] Portfolio rebalancing recommendations
+- [ ] Tax-loss harvesting suggestions
+- [ ] Mobile app (React Native)
+
+---
+
+<p align="center">Built with ❤️ for smarter investing</p>
